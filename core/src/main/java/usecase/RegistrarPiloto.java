@@ -1,7 +1,7 @@
 package usecase;
 
 import exception.ExceptionFalloElRegistro;
-import exception.ExceptionPilotConMismoNombre;
+import exception.ExceptionPilotConMismoDni;
 import model.Piloto;
 import output.Persistence;
 
@@ -16,8 +16,8 @@ public class RegistrarPiloto implements input.RegistrarPiloto {
 
     @Override
     public UUID RegistrarPiloto(Piloto p1) {
-        if (myBD.ExistePiloto(p1.getName())){
-            throw new ExceptionPilotConMismoNombre("Ese piloto Ya existe");
+        if (myBD.ExistePiloto(p1.getDni())){
+            throw new ExceptionPilotConMismoDni("Ese piloto Ya existe");
         }
         if (myBD.GuardarPiloto(p1) == null) {
             throw new ExceptionFalloElRegistro("Fallo el registro del Piloto");

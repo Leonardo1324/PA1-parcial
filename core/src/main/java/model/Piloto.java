@@ -1,7 +1,6 @@
 package model;
 
-import exception.ExceptionAtributosNulo;
-import exception.ExceptionPilotoMenorDeEdad;
+import exception.*;
 
 import java.time.LocalDate;
 import java.util.Locale;
@@ -23,7 +22,16 @@ public class Piloto {
         if (id == null || name == null || dni == null || bdate == null) {
             throw new ExceptionAtributosNulo("Atributos faltantes");
         }
-        if (2024-bdate.getYear() < 18){
+        if (name.isEmpty()){
+            throw new ExceptionNombreVacio("El nombre no puede estar vacio");
+        }
+        if (dni.isEmpty()) {
+            throw new ExceptionDniVacio("el DNI no puede estar vacio");
+        }
+        if (dni.length() != 9) {
+            throw new ExceptionDniNoValido("El dni debe tener 9 caracteres");
+        }
+        if (LocalDate.now().minusYears(bdate.getYear()).getYear() < 18){
             throw new ExceptionPilotoMenorDeEdad("el piloto es menor de edad");
         }
         return new Piloto(id,name,dni,bdate);
@@ -33,7 +41,7 @@ public class Piloto {
         return this.id;
     }
 
-    public String getName() {
-        return name;
+    public String getDni() {
+        return dni;
     }
 }

@@ -1,7 +1,7 @@
 package usecase;
 
 import exception.ExceptionFalloElRegistro;
-import exception.ExceptionPilotConMismoNombre;
+import exception.ExceptionPilotConMismoDni;
 import model.Piloto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,26 +20,27 @@ public class TestRegistrarPiloto {
     @Mock
     Persistence BD;
     @Test
-    void PilotoConMismoNombre() {
+    void PilotoConMismoDni() {
         Exception e;
         RegistrarPiloto rp = new RegistrarPiloto(BD);
-        when(BD.ExistePiloto("Franco")).thenReturn(Boolean.TRUE);
-        e = Assertions.assertThrows(ExceptionPilotConMismoNombre.class,()-> rp.RegistrarPiloto(Piloto.Instance(UUID.randomUUID(),"Franco","50123321", LocalDate.MIN)));
+        when(BD.ExistePiloto("50123321")).thenReturn(Boolean.TRUE);
+
+        e = Assertions.assertThrows(ExceptionPilotConMismoDni.class,()-> rp.RegistrarPiloto(Piloto.Instance(UUID.randomUUID(),"Franco","50123321", LocalDate.MIN)));
         verify(BD,never()).GuardarPiloto(Piloto.Instance(UUID.randomUUID(),"Franco","50123321",LocalDate.MIN));
     }
     @Test
-    void PilotoConDistintoNombre() {
+    void PilotoConDistintoDni() {
         UUID id = UUID.randomUUID();
-        Piloto p1 = Piloto.Instance(id,"Alex","50123321",LocalDate.MIN);
+        Piloto p1 = Piloto.Instance(id,"Alex","123456789",LocalDate.MIN);
         RegistrarPiloto rp = new RegistrarPiloto(BD);
-        when(BD.ExistePiloto("Alex")).thenReturn(Boolean.FALSE);
+        when(BD.ExistePiloto("123456789")).thenReturn(Boolean.FALSE);
         when(BD.GuardarPiloto(p1)).thenReturn(p1.getID());
 
         Assertions.assertDoesNotThrow(()-> rp.RegistrarPiloto(p1));
         Assertions.assertEquals(id,rp.RegistrarPiloto(p1));
     }
     @Test
-    void PilotoConDistintoNombreFallaCarga() {
+    void PilotoConDistintoDniFallaCarga() {
         Exception e;
         UUID id = UUID.randomUUID();
         Piloto p1 = Piloto.Instance(id,"Alex","50123321",LocalDate.MIN);
