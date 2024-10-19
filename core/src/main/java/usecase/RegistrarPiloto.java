@@ -1,5 +1,6 @@
 package usecase;
 
+import exception.ExceptionFalloElRegistro;
 import exception.ExceptionPilotConMismoNombre;
 import model.Piloto;
 import output.Persistence;
@@ -18,6 +19,11 @@ public class RegistrarPiloto implements input.RegistrarPiloto {
         if (myBD.ExistePiloto(p1.getName())){
             throw new ExceptionPilotConMismoNombre("Ese piloto Ya existe");
         }
-        return myBD.GuardarPiloto(p1);
+        if (myBD.GuardarPiloto(p1) == null) {
+            throw new ExceptionFalloElRegistro("Fallo el registro del Piloto");
+        }
+        else{
+            return p1.getID();
+        }
     }
 }
