@@ -23,15 +23,15 @@ public class TestRegistrarPiloto {
     void PilotoConMismoDni() {
         Exception e;
         RegistrarPiloto rp = new RegistrarPiloto(BD);
-        when(BD.ExistePiloto("50123321")).thenReturn(Boolean.TRUE);
+        when(BD.ExistePiloto("123456789")).thenReturn(Boolean.TRUE);
 
-        e = Assertions.assertThrows(ExceptionPilotConMismoDni.class,()-> rp.RegistrarPiloto(Piloto.Instance(UUID.randomUUID(),"Franco","50123321", LocalDate.MIN)));
-        verify(BD,never()).GuardarPiloto(Piloto.Instance(UUID.randomUUID(),"Franco","50123321",LocalDate.MIN));
+        e = Assertions.assertThrows(ExceptionPilotConMismoDni.class,()-> rp.RegistrarPiloto(Piloto.Instance(UUID.randomUUID(),"Franco","123456789", LocalDate.of(2002,10,25))));
+        verify(BD,never()).GuardarPiloto(Piloto.Instance(UUID.randomUUID(),"Franco","123456789",LocalDate.of(2002,10,25)));
     }
     @Test
     void PilotoConDistintoDni() {
         UUID id = UUID.randomUUID();
-        Piloto p1 = Piloto.Instance(id,"Alex","123456789",LocalDate.MIN);
+        Piloto p1 = Piloto.Instance(id,"Alex","123456789",LocalDate.of(2002,10,25));
         RegistrarPiloto rp = new RegistrarPiloto(BD);
         when(BD.ExistePiloto("123456789")).thenReturn(Boolean.FALSE);
         when(BD.GuardarPiloto(p1)).thenReturn(p1.getID());
@@ -43,9 +43,9 @@ public class TestRegistrarPiloto {
     void PilotoConDistintoDniFallaCarga() {
         Exception e;
         UUID id = UUID.randomUUID();
-        Piloto p1 = Piloto.Instance(id,"Alex","50123321",LocalDate.MIN);
+        Piloto p1 = Piloto.Instance(id,"Alex","123456789",LocalDate.of(2002,10,25));
         RegistrarPiloto rp = new RegistrarPiloto(BD);
-        when(BD.ExistePiloto("Alex")).thenReturn(Boolean.FALSE);
+        when(BD.ExistePiloto("123456789")).thenReturn(Boolean.FALSE);
         when(BD.GuardarPiloto(p1)).thenReturn(null);
 
         e = Assertions.assertThrows(ExceptionFalloElRegistro.class,()-> rp.RegistrarPiloto(p1));

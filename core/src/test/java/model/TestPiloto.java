@@ -11,7 +11,7 @@ public class TestPiloto {
     @Test
     void AtributosFaltantes() {
         Exception e;
-        e = Assertions.assertThrows(ExceptionAtributosNulo.class,()->Piloto.Instance(UUID.randomUUID(),null,"50123321", LocalDate.MIN));
+        e = Assertions.assertThrows(ExceptionAtributosNulo.class,()->Piloto.Instance(UUID.randomUUID(),null,"123456789", LocalDate.of(2010,10,25)));
         Assertions.assertEquals("Atributos faltantes",e.getMessage());
     }
     @Test
