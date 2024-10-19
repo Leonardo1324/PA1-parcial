@@ -29,4 +29,11 @@ public class Piloto {
         return new Piloto(id,name,dni,bdate);
     }
 
+    public UUID getID() {
+        return this.id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
